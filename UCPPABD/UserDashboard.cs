@@ -175,5 +175,10 @@ namespace UCPPABD
         private void label9_Click(object sender, EventArgs e) { }
         private void label12_Click(object sender, EventArgs e) { }
         private void groupBox2_Enter(object sender, EventArgs e) { }
+
+        private void cmbPilihkelas_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

@@ -68,7 +68,7 @@
             this.btnLogout.TabIndex = 0;
             this.btnLogout.Text = "LOG OUT";
             this.btnLogout.UseVisualStyleBackColor = true;
-            this.btnLogout.Click += new System.EventHandler(this.button1_Click);
+            this.btnLogout.Click += new System.EventHandler(this.btnLogout_Click);
             // 
             // panel1
             // 
@@ -194,6 +194,7 @@
             this.cmbPilihkelas.Name = "cmbPilihkelas";
             this.cmbPilihkelas.Size = new System.Drawing.Size(129, 28);
             this.cmbPilihkelas.TabIndex = 5;
+            this.cmbPilihkelas.SelectedIndexChanged += new System.EventHandler(this.cmbPilihkelas_SelectedIndexChanged);
             // 
             // label4
             // 
@@ -357,8 +358,6 @@
         private System.Windows.Forms.TextBox txtMapel;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.ComboBox cmbPilihkelas;
-        private System.Windows.Forms.Label lblNIS;
-        private System.Windows.Forms.Label lblNama;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Button btnSimpan;
         private System.Windows.Forms.Label lblMax;
@@ -367,5 +366,7 @@
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label lblStatus;
+        public System.Windows.Forms.Label lblNIS;
+        public System.Windows.Forms.Label lblNama;
     }
 }
