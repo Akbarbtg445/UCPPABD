@@ -53,6 +53,7 @@
             this.lblSisa = new System.Windows.Forms.Label();
             this.lblTerisi = new System.Windows.Forms.Label();
             this.lblMax = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvJadwal)).BeginInit();
@@ -316,11 +317,21 @@
             this.lblMax.Text = "Kapasitas Maksimal";
             this.lblMax.Click += new System.EventHandler(this.label8_Click);
             // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(747, 409);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(51, 20);
+            this.label5.TabIndex = 6;
+            this.label5.Text = "label5";
+            // 
             // UserDashboard
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(956, 720);
+            this.Controls.Add(this.label5);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.dgvJadwal);
@@ -339,6 +350,7 @@
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -369,5 +381,6 @@
         private System.Windows.Forms.Label lblStatus;
         public System.Windows.Forms.Label lblNIS;
         public System.Windows.Forms.Label lblNama;
+        private System.Windows.Forms.Label label5;
     }
 }
