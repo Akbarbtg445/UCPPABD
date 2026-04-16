@@ -28,25 +28,25 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.button1 = new System.Windows.Forms.Button();
+            this.btnLogout = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.cmbKelas = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.button2 = new System.Windows.Forms.Button();
+            this.btnCari = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.button3 = new System.Windows.Forms.Button();
+            this.btnCetak = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.txtMapel = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
-            this.comboBox2 = new System.Windows.Forms.ComboBox();
+            this.cmbPilihkelas = new System.Windows.Forms.ComboBox();
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
-            this.button4 = new System.Windows.Forms.Button();
+            this.btnSimpan = new System.Windows.Forms.Button();
             this.lblMax = new System.Windows.Forms.Label();
             this.lblTerisi = new System.Windows.Forms.Label();
             this.lblSisa = new System.Windows.Forms.Label();
@@ -59,15 +59,15 @@
             this.groupBox3.SuspendLayout();
             this.SuspendLayout();
             // 
-            // button1
+            // btnLogout
             // 
-            this.button1.Location = new System.Drawing.Point(796, 73);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(105, 34);
-            this.button1.TabIndex = 0;
-            this.button1.Text = "LOG OUT";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.btnLogout.Location = new System.Drawing.Point(796, 73);
+            this.btnLogout.Name = "btnLogout";
+            this.btnLogout.Size = new System.Drawing.Size(105, 34);
+            this.btnLogout.TabIndex = 0;
+            this.btnLogout.Text = "LOG OUT";
+            this.btnLogout.UseVisualStyleBackColor = true;
+            this.btnLogout.Click += new System.EventHandler(this.button1_Click);
             // 
             // panel1
             // 
@@ -82,9 +82,9 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.button2);
+            this.groupBox1.Controls.Add(this.btnCari);
             this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Controls.Add(this.comboBox1);
+            this.groupBox1.Controls.Add(this.cmbKelas);
             this.groupBox1.Location = new System.Drawing.Point(29, 102);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(280, 114);
@@ -104,13 +104,13 @@
             this.dataGridView1.Size = new System.Drawing.Size(450, 183);
             this.dataGridView1.TabIndex = 3;
             // 
-            // comboBox1
+            // cmbKelas
             // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(134, 35);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(121, 28);
-            this.comboBox1.TabIndex = 0;
+            this.cmbKelas.FormattingEnabled = true;
+            this.cmbKelas.Location = new System.Drawing.Point(134, 35);
+            this.cmbKelas.Name = "cmbKelas";
+            this.cmbKelas.Size = new System.Drawing.Size(121, 28);
+            this.cmbKelas.TabIndex = 0;
             // 
             // label1
             // 
@@ -124,14 +124,14 @@
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.button4);
+            this.groupBox2.Controls.Add(this.btnSimpan);
             this.groupBox2.Controls.Add(this.label7);
-            this.groupBox2.Controls.Add(this.comboBox2);
+            this.groupBox2.Controls.Add(this.cmbPilihkelas);
             this.groupBox2.Controls.Add(this.label4);
-            this.groupBox2.Controls.Add(this.textBox1);
+            this.groupBox2.Controls.Add(this.txtMapel);
             this.groupBox2.Controls.Add(this.label3);
             this.groupBox2.Controls.Add(this.label2);
-            this.groupBox2.Controls.Add(this.button3);
+            this.groupBox2.Controls.Add(this.btnCetak);
             this.groupBox2.Location = new System.Drawing.Point(556, 465);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(318, 230);
@@ -140,14 +140,14 @@
             this.groupBox2.Text = "Edit Jadwal Pribadi";
             this.groupBox2.Enter += new System.EventHandler(this.groupBox2_Enter);
             // 
-            // button2
+            // btnCari
             // 
-            this.button2.Location = new System.Drawing.Point(134, 74);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 34);
-            this.button2.TabIndex = 2;
-            this.button2.Text = "CARI";
-            this.button2.UseVisualStyleBackColor = true;
+            this.btnCari.Location = new System.Drawing.Point(134, 74);
+            this.btnCari.Name = "btnCari";
+            this.btnCari.Size = new System.Drawing.Size(75, 34);
+            this.btnCari.TabIndex = 2;
+            this.btnCari.Text = "CARI";
+            this.btnCari.UseVisualStyleBackColor = true;
             // 
             // groupBox3
             // 
@@ -163,15 +163,15 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Cek Kapasitas";
             // 
-            // button3
+            // btnCetak
             // 
-            this.button3.Location = new System.Drawing.Point(214, 194);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(75, 30);
-            this.button3.TabIndex = 0;
-            this.button3.Text = "Cetak";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
+            this.btnCetak.Location = new System.Drawing.Point(214, 194);
+            this.btnCetak.Name = "btnCetak";
+            this.btnCetak.Size = new System.Drawing.Size(75, 30);
+            this.btnCetak.TabIndex = 0;
+            this.btnCetak.Text = "Cetak";
+            this.btnCetak.UseVisualStyleBackColor = true;
+            this.btnCetak.Click += new System.EventHandler(this.button3_Click);
             // 
             // label2
             // 
@@ -192,12 +192,12 @@
             this.label3.TabIndex = 2;
             this.label3.Text = "Mata Pelajaran";
             // 
-            // textBox1
+            // txtMapel
             // 
-            this.textBox1.Location = new System.Drawing.Point(160, 40);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(129, 26);
-            this.textBox1.TabIndex = 3;
+            this.txtMapel.Location = new System.Drawing.Point(160, 40);
+            this.txtMapel.Name = "txtMapel";
+            this.txtMapel.Size = new System.Drawing.Size(129, 26);
+            this.txtMapel.TabIndex = 3;
             // 
             // label4
             // 
@@ -209,13 +209,13 @@
             this.label4.Text = "Pilih Kelas";
             this.label4.Click += new System.EventHandler(this.label4_Click);
             // 
-            // comboBox2
+            // cmbPilihkelas
             // 
-            this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Location = new System.Drawing.Point(160, 82);
-            this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(129, 28);
-            this.comboBox2.TabIndex = 5;
+            this.cmbPilihkelas.FormattingEnabled = true;
+            this.cmbPilihkelas.Location = new System.Drawing.Point(160, 82);
+            this.cmbPilihkelas.Name = "cmbPilihkelas";
+            this.cmbPilihkelas.Size = new System.Drawing.Size(129, 28);
+            this.cmbPilihkelas.TabIndex = 5;
             // 
             // label5
             // 
@@ -245,14 +245,14 @@
             this.label7.Text = "Simpan Perubahan";
             this.label7.Click += new System.EventHandler(this.label7_Click);
             // 
-            // button4
+            // btnSimpan
             // 
-            this.button4.Location = new System.Drawing.Point(14, 194);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(75, 36);
-            this.button4.TabIndex = 7;
-            this.button4.Text = "Simpan";
-            this.button4.UseVisualStyleBackColor = true;
+            this.btnSimpan.Location = new System.Drawing.Point(14, 194);
+            this.btnSimpan.Name = "btnSimpan";
+            this.btnSimpan.Size = new System.Drawing.Size(75, 36);
+            this.btnSimpan.TabIndex = 7;
+            this.btnSimpan.Text = "Simpan";
+            this.btnSimpan.UseVisualStyleBackColor = true;
             // 
             // lblMax
             // 
@@ -313,7 +313,7 @@
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.panel1);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.btnLogout);
             this.Name = "UserDashboard";
             this.Text = "UserDashboard";
             this.panel1.ResumeLayout(false);
@@ -331,25 +331,25 @@
 
         #endregion
 
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btnLogout;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.ComboBox cmbKelas;
         private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button btnCari;
         private System.Windows.Forms.GroupBox groupBox3;
-        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button btnCetak;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox txtMapel;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.ComboBox comboBox2;
+        private System.Windows.Forms.ComboBox cmbPilihkelas;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Button btnSimpan;
         private System.Windows.Forms.Label lblMax;
         private System.Windows.Forms.Label lblSisa;
         private System.Windows.Forms.Label lblTerisi;
