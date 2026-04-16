@@ -251,7 +251,7 @@
             this.groupBox3.Controls.Add(this.lblSisa);
             this.groupBox3.Controls.Add(this.lblTerisi);
             this.groupBox3.Controls.Add(this.lblMax);
-            this.groupBox3.Location = new System.Drawing.Point(67, 465);
+            this.groupBox3.Location = new System.Drawing.Point(60, 465);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(343, 224);
             this.groupBox3.TabIndex = 5;
