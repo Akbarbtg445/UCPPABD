@@ -148,7 +148,7 @@
             this.dgvJadwal.RowHeadersWidth = 62;
             this.dgvJadwal.RowTemplate.Height = 28;
             this.dgvJadwal.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvJadwal.Size = new System.Drawing.Size(450, 183);
+            this.dgvJadwal.Size = new System.Drawing.Size(683, 183);
             this.dgvJadwal.TabIndex = 3;
             // 
             // groupBox2
