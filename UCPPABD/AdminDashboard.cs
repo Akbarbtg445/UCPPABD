@@ -19,11 +19,11 @@ namespace UCPPABD
         public AdminDashboard()
         {
             InitializeComponent();
-            tampilkanData();      // Load tabel jadwal
-            isiPilihanComboBox(); // Load pilihan Kelas, Guru, Mapel
+            tampilkanData();      // Load tabel jadwal saat dibuka
+            isiPilihanComboBox(); // Load data Guru, Mapel, dan Kelas ke dropdown
         }
 
-        // --- 1. FUNGSI MENAMPILKAN DATA KE TABEL ---
+        // --- 1. FUNGSI MENAMPILKAN DATA KE TABEL (READ) ---
         void tampilkanData()
         {
             using (SqlConnection conn = new SqlConnection(connectionString))
@@ -43,7 +43,7 @@ namespace UCPPABD
             }
         }
 
-        // --- 2. FUNGSI ISI PILIHAN COMBOBOX (SESUAI NAMA KOLOM DB) ---
+        // --- 2. FUNGSI ISI PILIHAN DROPDOWN (OTOMATIS DARI DATABASE) ---
         void isiPilihanComboBox()
         {
             using (SqlConnection conn = new SqlConnection(connectionString))
@@ -52,21 +52,21 @@ namespace UCPPABD
                 {
                     conn.Open();
 
-                    // 1. Ambil Data Kelas
+                    // Load Data Kelas
                     SqlCommand cmdKelas = new SqlCommand("SELECT idKelas FROM Kelas", conn);
                     SqlDataReader drKelas = cmdKelas.ExecuteReader();
                     cmbKelas.Items.Clear();
                     while (drKelas.Read()) { cmbKelas.Items.Add(drKelas["idKelas"].ToString()); }
                     drKelas.Close();
 
-                    // 2. Ambil Data Guru (Kolom 'nama')
+                    // Load Data Guru
                     SqlCommand cmdGuru = new SqlCommand("SELECT nama FROM Guru", conn);
                     SqlDataReader drGuru = cmdGuru.ExecuteReader();
                     cmbGuru.Items.Clear();
                     while (drGuru.Read()) { cmbGuru.Items.Add(drGuru["nama"].ToString()); }
                     drGuru.Close();
 
-                    // 3. Ambil Data Mata Pelajaran (Kolom 'namaMapel')
+                    // Load Data Mata Pelajaran
                     SqlCommand cmdMapel = new SqlCommand("SELECT namaMapel FROM MataPelajaran", conn);
                     SqlDataReader drMapel = cmdMapel.ExecuteReader();
                     cmbMapel.Items.Clear();
@@ -80,7 +80,7 @@ namespace UCPPABD
             }
         }
 
-        // --- 3. FUNGSI RESET FORM ---
+        // --- 3. FUNGSI RESET INPUTAN ---
         void resetForm()
         {
             cmbHari.SelectedIndex = -1;
@@ -91,12 +91,12 @@ namespace UCPPABD
             dtpSelesai.Value = DateTime.Now;
         }
 
-        // --- 4. TOMBOL TAMBAH (SESUAI jamMulai, jamSelesai, idKeahlian) ---
+        // --- 4. TOMBOL TAMBAH (CREATE) ---
         private void button1_Click(object sender, EventArgs e)
         {
             if (cmbHari.Text == "" || cmbKelas.Text == "" || cmbMapel.Text == "" || cmbGuru.Text == "")
             {
-                MessageBox.Show("Mohon isi semua data!", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Mohon lengkapi semua pilihan sebelum menambah data!", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
@@ -105,20 +105,21 @@ namespace UCPPABD
                 try
                 {
                     conn.Open();
-                    // Query disesuaikan dengan screenshot SSMS: jamMulai, jamSelesai, idKeahlian
                     string query = "INSERT INTO Jadwal (hari, jamMulai, jamSelesai, idKelas, idKeahlian, idGuru) " +
-                                   "VALUES (@hari, @mulai, @selesai, @kelas, @mapel, @guru)";
+                                   "VALUES (@hari, @mulai, @selesai, @kelas, " +
+                                   "(SELECT TOP 1 idMapel FROM MataPelajaran WHERE namaMapel = @mapel), " +
+                                   "(SELECT TOP 1 idGuru FROM Guru WHERE nama = @guru))";
 
                     SqlCommand cmd = new SqlCommand(query, conn);
                     cmd.Parameters.AddWithValue("@hari", cmbHari.Text);
                     cmd.Parameters.AddWithValue("@mulai", dtpMulai.Value.ToString("HH:mm:ss"));
                     cmd.Parameters.AddWithValue("@selesai", dtpSelesai.Value.ToString("HH:mm:ss"));
                     cmd.Parameters.AddWithValue("@kelas", cmbKelas.Text);
-                    cmd.Parameters.AddWithValue("@mapel", cmbMapel.Text); // Dimasukkan ke idKeahlian
+                    cmd.Parameters.AddWithValue("@mapel", cmbMapel.Text);
                     cmd.Parameters.AddWithValue("@guru", cmbGuru.Text);
 
                     cmd.ExecuteNonQuery();
-                    MessageBox.Show("Jadwal Berhasil Ditambahkan!");
+                    MessageBox.Show("Jadwal Berhasil Ditambahkan!", "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     tampilkanData();
                     resetForm();
                 }
@@ -132,7 +133,13 @@ namespace UCPPABD
         // --- 5. TOMBOL UBAH (UPDATE) ---
         private void button2_Click(object sender, EventArgs e)
         {
-            if (dgvJadwal.CurrentRow == null) { MessageBox.Show("Pilih data yang ingin diubah!"); return; }
+            if (dgvJadwal.CurrentRow == null) { MessageBox.Show("Pilih baris di tabel yang ingin diubah!"); return; }
+
+            if (cmbHari.Text == "" || cmbKelas.Text == "" || cmbMapel.Text == "" || cmbGuru.Text == "")
+            {
+                MessageBox.Show("Data tidak boleh kosong saat melakukan update!", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
 
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
@@ -141,9 +148,10 @@ namespace UCPPABD
                     conn.Open();
                     string id = dgvJadwal.CurrentRow.Cells["idJadwal"].Value.ToString();
 
-                    // Query UPDATE disesuaikan
-                    string query = "UPDATE Jadwal SET hari=@hari, jamMulai=@mulai, jamSelesai=@selesai, " +
-                                   "idKelas=@kelas, idKeahlian=@mapel, idGuru=@guru WHERE idJadwal=@id";
+                    string query = "UPDATE Jadwal SET hari=@hari, jamMulai=@mulai, jamSelesai=@selesai, idKelas=@kelas, " +
+                                   "idKeahlian=(SELECT TOP 1 idMapel FROM MataPelajaran WHERE namaMapel=@mapel), " +
+                                   "idGuru=(SELECT TOP 1 idGuru FROM Guru WHERE nama=@guru) " +
+                                   "WHERE idJadwal=@id";
 
                     SqlCommand cmd = new SqlCommand(query, conn);
                     cmd.Parameters.AddWithValue("@id", id);
@@ -155,7 +163,7 @@ namespace UCPPABD
                     cmd.Parameters.AddWithValue("@guru", cmbGuru.Text);
 
                     cmd.ExecuteNonQuery();
-                    MessageBox.Show("Data Berhasil Diperbarui!");
+                    MessageBox.Show("Data Berhasil Diperbarui!", "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     tampilkanData();
                 }
                 catch (Exception ex)
@@ -168,10 +176,10 @@ namespace UCPPABD
         // --- 6. TOMBOL HAPUS (DELETE) ---
         private void button3_Click(object sender, EventArgs e)
         {
-            if (dgvJadwal.CurrentRow == null) { MessageBox.Show("Pilih data yang ingin dihapus!"); return; }
+            if (dgvJadwal.CurrentRow == null) { MessageBox.Show("Pilih baris yang ingin dihapus!"); return; }
 
             string id = dgvJadwal.CurrentRow.Cells["idJadwal"].Value.ToString();
-            DialogResult dr = MessageBox.Show("Hapus jadwal ini?", "Konfirmasi", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            DialogResult dr = MessageBox.Show($"Hapus jadwal dengan ID {id}?", "Konfirmasi Hapus", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
             if (dr == DialogResult.Yes)
             {
@@ -184,7 +192,7 @@ namespace UCPPABD
                         cmd.Parameters.AddWithValue("@id", id);
                         cmd.ExecuteNonQuery();
 
-                        MessageBox.Show("Data Terhapus!");
+                        MessageBox.Show("Data Berhasil Terhapus!");
                         tampilkanData();
                         resetForm();
                     }
@@ -196,21 +204,69 @@ namespace UCPPABD
             }
         }
 
-        // --- 7. KLIK TABEL (Isi Form Otomatis - Sinkron idKeahlian) ---
+        // --- 7. TOMBOL CETAK (EKSPOR KE CSV/EXCEL) ---
+        private void button4_Click(object sender, EventArgs e)
+        {
+            if (dgvJadwal.Rows.Count > 0)
+            {
+                SaveFileDialog sfd = new SaveFileDialog();
+                sfd.Filter = "CSV (*.csv)|*.csv";
+                sfd.FileName = "Laporan_Jadwal_Pelajaran.csv";
+
+                if (sfd.ShowDialog() == DialogResult.OK)
+                {
+                    try
+                    {
+                        string header = "";
+                        for (int i = 0; i < dgvJadwal.Columns.Count; i++)
+                        {
+                            header += dgvJadwal.Columns[i].HeaderText + ",";
+                        }
+
+                        List<string> lines = new List<string>();
+                        lines.Add(header);
+
+                        foreach (DataGridViewRow row in dgvJadwal.Rows)
+                        {
+                            if (!row.IsNewRow)
+                            {
+                                string line = "";
+                                for (int i = 0; i < dgvJadwal.Columns.Count; i++)
+                                {
+                                    line += row.Cells[i].Value?.ToString() + ",";
+                                }
+                                lines.Add(line);
+                            }
+                        }
+
+                        System.IO.File.WriteAllLines(sfd.FileName, lines, Encoding.UTF8);
+                        MessageBox.Show("Jadwal Berhasil Dicetak ke CSV!", "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Gagal mencetak: " + ex.Message);
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Tabel kosong, tidak ada data untuk dicetak!", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+        // --- 8. KLIK TABEL ---
         private void dgvJadwal_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             if (dgvJadwal.CurrentRow != null)
             {
                 cmbHari.Text = dgvJadwal.CurrentRow.Cells["hari"].Value.ToString();
                 cmbKelas.Text = dgvJadwal.CurrentRow.Cells["idKelas"].Value.ToString();
-
-                // Menggunakan idKeahlian sesuai kolom di DB
                 cmbMapel.Text = dgvJadwal.CurrentRow.Cells["idKeahlian"].Value.ToString();
                 cmbGuru.Text = dgvJadwal.CurrentRow.Cells["idGuru"].Value.ToString();
             }
         }
 
-        // --- 8. LOGOUT ---
+        // --- 9. LOGOUT ---
         private void btnLogoutA_Click(object sender, EventArgs e)
         {
             DialogResult result = MessageBox.Show("Yakin ingin keluar?", "Logout", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
@@ -222,8 +278,7 @@ namespace UCPPABD
             }
         }
 
-        // Event kosong untuk menjaga keutuhan file designer
-        private void button4_Click(object sender, EventArgs e) { }
+        // Event kosong untuk sinkronisasi designer
         private void dateTimePicker1_ValueChanged(object sender, EventArgs e) { }
         private void label2_Click(object sender, EventArgs e) { }
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e) { }
