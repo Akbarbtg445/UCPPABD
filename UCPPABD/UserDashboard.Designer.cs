@@ -47,12 +47,12 @@
             this.label2 = new System.Windows.Forms.Label();
             this.btnCetak = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.lblStatus = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.lblSisa = new System.Windows.Forms.Label();
             this.lblTerisi = new System.Windows.Forms.Label();
             this.lblMax = new System.Windows.Forms.Label();
-            this.lblStatus = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvJadwal)).BeginInit();
@@ -119,6 +119,7 @@
             this.btnCari.TabIndex = 2;
             this.btnCari.Text = "CARI";
             this.btnCari.UseVisualStyleBackColor = true;
+            this.btnCari.Click += new System.EventHandler(this.button1_Click);
             // 
             // label1
             // 
@@ -257,6 +258,15 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Cek Kapasitas";
             // 
+            // lblStatus
+            // 
+            this.lblStatus.AutoSize = true;
+            this.lblStatus.Location = new System.Drawing.Point(205, 112);
+            this.lblStatus.Name = "lblStatus";
+            this.lblStatus.Size = new System.Drawing.Size(56, 20);
+            this.lblStatus.TabIndex = 5;
+            this.lblStatus.Text = "Status";
+            // 
             // label12
             // 
             this.label12.AutoSize = true;
@@ -305,15 +315,6 @@
             this.lblMax.TabIndex = 0;
             this.lblMax.Text = "Kapasitas Maksimal";
             this.lblMax.Click += new System.EventHandler(this.label8_Click);
-            // 
-            // lblStatus
-            // 
-            this.lblStatus.AutoSize = true;
-            this.lblStatus.Location = new System.Drawing.Point(205, 112);
-            this.lblStatus.Name = "lblStatus";
-            this.lblStatus.Size = new System.Drawing.Size(56, 20);
-            this.lblStatus.TabIndex = 5;
-            this.lblStatus.Text = "Status";
             // 
             // UserDashboard
             // 
