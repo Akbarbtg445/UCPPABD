@@ -142,13 +142,13 @@
             // dgvJadwal
             // 
             this.dgvJadwal.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvJadwal.Location = new System.Drawing.Point(218, 233);
+            this.dgvJadwal.Location = new System.Drawing.Point(29, 233);
             this.dgvJadwal.Name = "dgvJadwal";
             this.dgvJadwal.ReadOnly = true;
             this.dgvJadwal.RowHeadersWidth = 62;
             this.dgvJadwal.RowTemplate.Height = 28;
             this.dgvJadwal.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvJadwal.Size = new System.Drawing.Size(683, 183);
+            this.dgvJadwal.Size = new System.Drawing.Size(872, 183);
             this.dgvJadwal.TabIndex = 3;
             // 
             // groupBox2
