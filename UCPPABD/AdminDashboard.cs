@@ -28,6 +28,8 @@ namespace UCPPABD
 
         // --- 1. FUNGSI MENAMPILKAN DATA KE TABEL (READ) ---
         void tampilkanData()
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
 
 
         // --- 2. FUNGSI ISI PILIHAN DROPDOWN 
