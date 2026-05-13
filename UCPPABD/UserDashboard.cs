@@ -33,9 +33,8 @@ namespace UCPPABD
                     SqlCommand cmd = new SqlCommand("SELECT idKelas FROM Kelas", conn);
                     SqlDataReader dr = cmd.ExecuteReader();
 
-                    // Kita bersihkan dua-duanya biar adil
-                    cmbKelas.Items.Clear();        // Dropdown Cari (Atas)
-                    cmbPilihkelas.Items.Clear();   // Dropdown Edit (Bawah/Kanan)
+                    cmbKelas.Items.Clear();
+                    cmbPilihkelas.Items.Clear();
 
                     while (dr.Read())
                     {
@@ -45,7 +44,6 @@ namespace UCPPABD
                     }
                     dr.Close();
 
-                    // Pancingan jika database kosong
                     if (cmbKelas.Items.Count == 0)
                     {
                         cmbKelas.Items.Add("KLS01");
@@ -99,91 +97,64 @@ namespace UCPPABD
             }
         }
 
-        // --- 4. KLIK TABEL (SYNC KE FORM EDIT) ---
-        // --- 4. KLIK TABEL (SYNC KE FORM EDIT) ---
+        // --- 4. KLIK TABEL (SYNC KE FORM EDIT & CEK KAPASITAS) ---
         private void dgvJadwal_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (dgvJadwal.CurrentRow != null)
+            if (dgvJadwal.CurrentRow != null && e.RowIndex >= 0)
             {
                 try
                 {
                     string idJadwal = dgvJadwal.CurrentRow.Cells["idJadwal"].Value.ToString();
                     string idKelas = dgvJadwal.CurrentRow.Cells["idKelas"].Value.ToString();
-                    string idKeahlianTerpilih = dgvJadwal.CurrentRow.Cells["idKeahlian"].Value.ToString();
 
+                    txtMapel.Text = dgvJadwal.CurrentRow.Cells["idKeahlian"].Value.ToString();
                     cmbPilihkelas.Text = idKelas;
 
                     using (SqlConnection conn = new SqlConnection(connectionString))
                     {
                         conn.Open();
-
-                        // 1. Ambil Nama Mata Pelajaran (Bukan ID-nya) dengan JOIN
-                        string queryMapel = @"SELECT m.namaMapel 
-                                              FROM MataPelajaran m 
-                                              JOIN Keahlian_Guru kg ON m.idMapel = kg.idMapel 
-                                              WHERE kg.idKeahlian = @id";
-                        SqlCommand cmdMapel = new SqlCommand(queryMapel, conn);
-                        cmdMapel.Parameters.AddWithValue("@id", idKeahlianTerpilih);
-                        object namaMapel = cmdMapel.ExecuteScalar();
-
-                        if (namaMapel != null)
-                        {
-                            txtMapel.Text = namaMapel.ToString();
-                        }
-                        else
-                        {
-                            txtMapel.Text = "-";
-                        }
-
-                        // 2. Ambil Kapasitas
+                        // Ambil Kapasitas Maksimal
                         SqlCommand cmdMax = new SqlCommand("SELECT kapasitas FROM Kelas WHERE idKelas = @kelas", conn);
                         cmdMax.Parameters.AddWithValue("@kelas", idKelas);
                         object res = cmdMax.ExecuteScalar();
                         int max = (res != null) ? Convert.ToInt32(res) : 0;
 
-                        // 3. Hitung Terisi
+                        // Hitung Jumlah Siswa Terisi
                         SqlCommand cmdTerisi = new SqlCommand("SELECT COUNT(*) FROM Jadwal_Pribadi WHERE idJadwal = @id", conn);
                         cmdTerisi.Parameters.AddWithValue("@id", idJadwal);
                         int terisi = Convert.ToInt32(cmdTerisi.ExecuteScalar());
 
                         int sisa = max - terisi;
 
-                        lblMax.Text = max.ToString();
-                        lblTerisi.Text = terisi.ToString();
-                        lblSisa.Text = sisa.ToString();
+                        // --- PERBAIKAN TAMPILAN LABEL ---
+                        lblMax.Text = "Kapasitas Maksimal : " + max.ToString();
+                        lblTerisi.Text = "Jumlah Siswa Terisi : " + terisi.ToString();
+                        lblSisa.Text = "Sisa Kuota : " + sisa.ToString();
 
                         if (sisa > 0)
                         {
-                            lblStatus.Text = "TERSEDIA";
+                            lblStatus.Text = "Status : TERSEDIA";
                             lblStatus.ForeColor = Color.Green;
                             btnSimpan.Enabled = true;
                         }
                         else
                         {
-                            lblStatus.Text = "PENUH";
+                            lblStatus.Text = "Status : PENUH";
                             lblStatus.ForeColor = Color.Red;
                             btnSimpan.Enabled = false;
                         }
-                    } // conn otomatis ditutup di sini berkat 'using'
+                    }
                 }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Gagal pilih data: " + ex.Message);
-                }
+                catch (Exception ex) { MessageBox.Show("Gagal pilih data: " + ex.Message); }
             }
         }
 
-        // --- 5. SIMPAN KE JADWAL PRIBADI ---
-        private void button3_Click(object sender, EventArgs e)
+        // --- 5. SIMPAN KE JADWAL PRIBADI (TOMBOL SIMPAN) ---
+        private void btnSimpan_Click(object sender, EventArgs e)
         {
-            if (dgvJadwal.CurrentRow == null) return;
-
-            // Pastikan Label NIS/User ID (di pojok kanan atas) terbaca dengan benar
-            string idUser = lblNIS.Text;
-
-            if (string.IsNullOrEmpty(idUser))
+            if (dgvJadwal.CurrentRow == null)
             {
-                MessageBox.Show("Error: ID User tidak ditemukan. Silakan login ulang.", "Peringatan");
+                MessageBox.Show("Pilih jadwal dari tabel terlebih dahulu!", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
@@ -193,35 +164,70 @@ namespace UCPPABD
                 {
                     conn.Open();
                     string idJadwal = dgvJadwal.CurrentRow.Cells["idJadwal"].Value.ToString();
+                    string nisSiswa = lblNIS.Text;
 
-                    // 1. Cek apakah jadwal sudah pernah diambil oleh user ini
-                    SqlCommand cmdCek = new SqlCommand("SELECT COUNT(*) FROM Jadwal_Pribadi WHERE idJadwal = @idJadwal AND idUser = @idUser", conn);
-                    cmdCek.Parameters.AddWithValue("@idJadwal", idJadwal);
-                    cmdCek.Parameters.AddWithValue("@idUser", idUser);
-                    int sudahAda = Convert.ToInt32(cmdCek.ExecuteScalar());
-
-                    if (sudahAda > 0)
-                    {
-                        MessageBox.Show("Anda sudah mengambil jadwal ini sebelumnya!", "Informasi", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        return; // Batalkan proses simpan
-                    }
-
-                    // 2. Simpan jika belum ada (Perhatikan nama kolom diubah menjadi idUser)
-                    SqlCommand cmd = new SqlCommand("INSERT INTO Jadwal_Pribadi (idJadwal, idUser) VALUES (@idJadwal, @idUser)", conn);
-                    cmd.Parameters.AddWithValue("@idJadwal", idJadwal);
-                    cmd.Parameters.AddWithValue("@idUser", idUser);
+                    SqlCommand cmd = new SqlCommand("INSERT INTO Jadwal_Pribadi (idJadwal, NIS) VALUES (@id, @nis)", conn);
+                    cmd.Parameters.AddWithValue("@id", idJadwal);
+                    cmd.Parameters.AddWithValue("@nis", nisSiswa);
 
                     cmd.ExecuteNonQuery();
-                    MessageBox.Show("Jadwal Pribadi Berhasil Disimpan!", "Sukses");
-
-                    // Opsional: Refresh perhitungan kapasitas setelah simpan
-                    dgvJadwal_CellClick(null, null);
+                    MessageBox.Show("Jadwal Pribadi Berhasil Disimpan!", "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
-                catch (Exception ex) { MessageBox.Show("Gagal Simpan: " + ex.Message); }
+                catch (Exception ex) { MessageBox.Show("Gagal Simpan (Mungkin jadwal sudah ada): " + ex.Message); }
             }
         }
 
-        // --- 6. LOGOUT ---
+        // --- 6. CETAK JADWAL PRIBADI (TOMBOL CETAK) ---
+        private void btnCetak_Click(object sender, EventArgs e)
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    conn.Open();
+                    string query = @"SELECT j.hari, j.jamMulai, j.jamSelesai, m.namaMapel, g.nama AS namaGuru, k.idKelas 
+                                     FROM Jadwal_Pribadi jp 
+                                     JOIN Jadwal j ON jp.idJadwal = j.idJadwal 
+                                     JOIN MataPelajaran m ON j.idKeahlian = m.idMapel 
+                                     JOIN Guru g ON j.idGuru = g.idGuru 
+                                     WHERE jp.NIS = @nis";
+
+                    SqlCommand cmd = new SqlCommand(query, conn);
+                    cmd.Parameters.AddWithValue("@nis", lblNIS.Text);
+                    SqlDataAdapter da = new SqlDataAdapter(cmd);
+                    DataTable dt = new DataTable();
+                    da.Fill(dt);
+
+                    if (dt.Rows.Count > 0)
+                    {
+                        SaveFileDialog sfd = new SaveFileDialog();
+                        sfd.Filter = "CSV (*.csv)|*.csv";
+                        sfd.FileName = $"Jadwal_Pribadi_{lblNama.Text}.csv";
+
+                        if (sfd.ShowDialog() == DialogResult.OK)
+                        {
+                            List<string> lines = new List<string>();
+                            lines.Add("Hari,Jam Mulai,Jam Selesai,Mata Pelajaran,Guru,Kelas");
+
+                            foreach (DataRow row in dt.Rows)
+                            {
+                                lines.Add($"{row["hari"]},{row["jamMulai"]},{row["jamSelesai"]},{row["namaMapel"]},{row["namaGuru"]},{row["idKelas"]}");
+                            }
+
+                            System.IO.File.WriteAllLines(sfd.FileName, lines, Encoding.UTF8);
+                            MessageBox.Show("Jadwal Pribadi Berhasil Dicetak!", "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("Kamu belum memiliki jadwal pribadi untuk dicetak.", "Kosong", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                }
+                catch (Exception ex) { MessageBox.Show("Gagal mencetak: " + ex.Message); }
+            }
+        }
+
+        // --- 7. LOGOUT ---
         private void btnLogout_Click(object sender, EventArgs e)
         {
             Form1 login = new Form1();
@@ -240,5 +246,6 @@ namespace UCPPABD
         private void label12_Click(object sender, EventArgs e) { }
         private void groupBox2_Enter(object sender, EventArgs e) { }
         private void cmbPilihkelas_SelectedIndexChanged(object sender, EventArgs e) { }
+        private void button3_Click(object sender, EventArgs e) { }
     }
 }
