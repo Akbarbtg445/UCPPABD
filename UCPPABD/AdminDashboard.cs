@@ -17,6 +17,7 @@ namespace UCPPABD
 
         // Menambahkan dua variabel ini untuk Data Binding
         private BindingSource bindingSource = new BindingSource();
+        private DataTable dtJadwal = new DataTable();
 
 
         // --- 1. FUNGSI MENAMPILKAN DATA KE TABEL (READ) ---
