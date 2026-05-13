@@ -106,7 +106,6 @@ namespace UCPPABD
             }
         }
 
-        // --- 3. TOMBOL CARI ---
         // --- 3. TOMBOL CARI (PAKAI STORED PROCEDURE) ---
         private void button1_Click(object sender, EventArgs e)
         {
