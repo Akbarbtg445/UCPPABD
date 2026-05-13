@@ -143,7 +143,14 @@ namespace UCPPABD
                     cmd.Parameters.AddWithValue("@namaMapel", cmbMapel.Text);
                     cmd.Parameters.AddWithValue("@namaGuru", cmbGuru.Text);
 
-
+                    conn.Open();
+                    cmd.ExecuteNonQuery();
+                    MessageBox.Show("Jadwal Berhasil Ditambahkan!", "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    tampilkanData(); // Refresh DataGridView
+                }
+                catch (Exception ex) { MessageBox.Show("Error Simpan: " + ex.Message); }
+            }
+        }
 
         // --- 5. TOMBOL UBAH (UPDATE) ---
         private void button2_Click(object sender, EventArgs e)
