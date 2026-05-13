@@ -20,6 +20,12 @@ namespace UCPPABD
             InitializeComponent();
             tampilkanData();
             isiPilihanKelas();
+            isiPilihanMapel(); // PANGGIL DI SINI AGAR OTOMATIS TERISI
+
+            // Setting Default Jam 07:00
+            DateTime hariIni = DateTime.Now;
+            dtpMulai.Value = new DateTime(hariIni.Year, hariIni.Month, hariIni.Day, 7, 0, 0);
+            dtpSelesai.Value = new DateTime(hariIni.Year, hariIni.Month, hariIni.Day, 8, 0, 0);
         }
 
         // --- 1. FUNGSI ISI SEMUA DROPDOWN KELAS ---
@@ -57,6 +63,31 @@ namespace UCPPABD
             }
         }
 
+        // --- FUNGSI ISI DROPDOWN MATA PELAJARAN ---
+        void isiPilihanMapel()
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand("SELECT namaMapel FROM MataPelajaran", conn);
+                    SqlDataReader dr = cmd.ExecuteReader();
+
+                    cmbMapel.Items.Clear();
+                    while (dr.Read())
+                    {
+                        cmbMapel.Items.Add(dr["namaMapel"].ToString());
+                    }
+                    dr.Close();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Gagal memuat daftar mata pelajaran: " + ex.Message);
+                }
+            }
+        }
+
         // --- 2. FUNGSI TAMPILKAN DATA JADWAL ---
         void tampilkanData()
         {
@@ -65,7 +96,12 @@ namespace UCPPABD
                 try
                 {
                     conn.Open();
-                    SqlDataAdapter da = new SqlDataAdapter("SELECT idJadwal, hari, jamMulai, jamSelesai, idKelas, idKeahlian, idGuru FROM Jadwal", conn);
+                    // Menggunakan JOIN untuk mengambil namaMapel dari tabel MataPelajaran
+                    string query = @"SELECT j.idJadwal, j.hari, j.jamMulai, j.jamSelesai, j.idKelas, m.namaMapel AS MataPelajaran, j.idGuru 
+                                     FROM Jadwal j 
+                                     JOIN MataPelajaran m ON j.idKeahlian = m.idMapel";
+
+                    SqlDataAdapter da = new SqlDataAdapter(query, conn);
                     DataTable dt = new DataTable();
                     da.Fill(dt);
                     dgvJadwal.DataSource = dt;
@@ -74,6 +110,7 @@ namespace UCPPABD
             }
         }
 
+        // --- 3. TOMBOL CARI ---
         // --- 3. TOMBOL CARI ---
         private void button1_Click(object sender, EventArgs e)
         {
@@ -84,7 +121,12 @@ namespace UCPPABD
                 try
                 {
                     conn.Open();
-                    string query = "SELECT idJadwal, hari, jamMulai, jamSelesai, idKelas, idKeahlian, idGuru FROM Jadwal WHERE idKelas = @kelas";
+                    // Sama seperti di atas, tambahkan JOIN
+                    string query = @"SELECT j.idJadwal, j.hari, j.jamMulai, j.jamSelesai, j.idKelas, m.namaMapel AS MataPelajaran, j.idGuru 
+                                     FROM Jadwal j 
+                                     JOIN MataPelajaran m ON j.idKeahlian = m.idMapel 
+                                     WHERE j.idKelas = @kelas";
+
                     SqlCommand cmd = new SqlCommand(query, conn);
                     cmd.Parameters.AddWithValue("@kelas", cmbKelas.Text);
 
@@ -98,6 +140,7 @@ namespace UCPPABD
         }
 
         // --- 4. KLIK TABEL (SYNC KE FORM EDIT & CEK KAPASITAS) ---
+        // --- 4. KLIK TABEL (SYNC KE FORM EDIT & CEK KAPASITAS) ---
         private void dgvJadwal_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (dgvJadwal.CurrentRow != null && e.RowIndex >= 0)
@@ -106,39 +149,25 @@ namespace UCPPABD
                 {
                     string idJadwal = dgvJadwal.CurrentRow.Cells["idJadwal"].Value.ToString();
                     string idKelas = dgvJadwal.CurrentRow.Cells["idKelas"].Value.ToString();
-                    string idKeahlianTerpilih = dgvJadwal.CurrentRow.Cells["idKeahlian"].Value.ToString();
+
+                    // Langsung ambil nama mapel dari tabel yang sudah di-JOIN
+                    cmbMapel.Text = dgvJadwal.CurrentRow.Cells["MataPelajaran"].Value.ToString();
 
                     cmbPilihkelas.Text = idKelas;
+                    dtpMulai.Value = DateTime.Parse(dgvJadwal.CurrentRow.Cells["jamMulai"].Value.ToString());
+                    dtpSelesai.Value = DateTime.Parse(dgvJadwal.CurrentRow.Cells["jamSelesai"].Value.ToString());
 
                     using (SqlConnection conn = new SqlConnection(connectionString))
                     {
                         conn.Open();
 
-                        // 1. Ambil Nama Mata Pelajaran (Bukan ID-nya) dengan JOIN
-                        string queryMapel = @"SELECT m.namaMapel 
-                                              FROM MataPelajaran m 
-                                              JOIN Keahlian_Guru kg ON m.idMapel = kg.idMapel 
-                                              WHERE kg.idKeahlian = @id";
-                        SqlCommand cmdMapel = new SqlCommand(queryMapel, conn);
-                        cmdMapel.Parameters.AddWithValue("@id", idKeahlianTerpilih);
-                        object namaMapel = cmdMapel.ExecuteScalar();
-
-                        if (namaMapel != null)
-                        {
-                            txtMapel.Text = namaMapel.ToString();
-                        }
-                        else
-                        {
-                            txtMapel.Text = "-";
-                        }
-
-                        // 2. Ambil Kapasitas Maksimal
+                        // Ambil Kapasitas Maksimal
                         SqlCommand cmdMax = new SqlCommand("SELECT kapasitas FROM Kelas WHERE idKelas = @kelas", conn);
                         cmdMax.Parameters.AddWithValue("@kelas", idKelas);
                         object res = cmdMax.ExecuteScalar();
                         int max = (res != null) ? Convert.ToInt32(res) : 0;
 
-                        // 3. Hitung Jumlah Siswa Terisi
+                        // Hitung Jumlah Siswa Terisi
                         SqlCommand cmdTerisi = new SqlCommand("SELECT COUNT(*) FROM Jadwal_Pribadi WHERE idJadwal = @id", conn);
                         cmdTerisi.Parameters.AddWithValue("@id", idJadwal);
                         int terisi = Convert.ToInt32(cmdTerisi.ExecuteScalar());
@@ -162,7 +191,7 @@ namespace UCPPABD
                             lblStatus.ForeColor = Color.Red;
                             btnSimpan.Enabled = false;
                         }
-                    } // conn otomatis ditutup di sini berkat 'using'
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -172,6 +201,7 @@ namespace UCPPABD
         }
 
         // --- 5. SIMPAN KE JADWAL PRIBADI (TOMBOL SIMPAN) ---
+        // --- 5. FUNGSI UPDATE JADWAL ---
         private void btnSimpan_Click(object sender, EventArgs e)
         {
             if (dgvJadwal.CurrentRow == null)
@@ -180,15 +210,26 @@ namespace UCPPABD
                 return;
             }
 
-            // Pastikan Label NIS/User ID (di pojok kanan atas) terbaca dengan benar
-            string idUser = lblNIS.Text;
+            // --- 1. Validasi Batasan Waktu (Mirip Admin) ---
+            TimeSpan waktuMulai = dtpMulai.Value.TimeOfDay;
+            TimeSpan waktuSelesai = dtpSelesai.Value.TimeOfDay;
 
-            if (string.IsNullOrEmpty(idUser))
+            if (waktuSelesai <= waktuMulai)
             {
-                MessageBox.Show("Error: ID User tidak ditemukan. Silakan login ulang.", "Peringatan");
+                MessageBox.Show("Jam Selesai harus lebih besar dari Jam Mulai!", "Kesalahan Waktu", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
+            TimeSpan jamBuka = new TimeSpan(7, 0, 0); // Jam 07:00
+            TimeSpan jamTutup = new TimeSpan(15, 0, 0); // Jam 15:00
+            if (waktuMulai < jamBuka || waktuSelesai > jamTutup)
+            {
+                MessageBox.Show("Jadwal harus berada pada jam kerja sekolah (07:00 - 15:00)!", "Di Luar Jam", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // --- 2. Proses UPDATE ke Database ---
+            // --- 2. Proses UPDATE ke Database ---
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 try
@@ -196,30 +237,35 @@ namespace UCPPABD
                     conn.Open();
                     string idJadwal = dgvJadwal.CurrentRow.Cells["idJadwal"].Value.ToString();
 
-                    // 1. Cek apakah jadwal sudah pernah diambil oleh user ini
-                    SqlCommand cmdCek = new SqlCommand("SELECT COUNT(*) FROM Jadwal_Pribadi WHERE idJadwal = @idJadwal AND idUser = @idUser", conn);
-                    cmdCek.Parameters.AddWithValue("@idJadwal", idJadwal);
-                    cmdCek.Parameters.AddWithValue("@idUser", idUser);
-                    int sudahAda = Convert.ToInt32(cmdCek.ExecuteScalar());
-
-                    if (sudahAda > 0)
+                    // 1. CARI ID MAPEL BERDASARKAN NAMA YANG DIPILIH DI COMBOBOX
+                    string idKeahlianBaru = "1"; // Default aman
+                    SqlCommand cmdCari = new SqlCommand("SELECT idMapel FROM MataPelajaran WHERE namaMapel = @nama", conn);
+                    cmdCari.Parameters.AddWithValue("@nama", cmbMapel.Text);
+                    object resMapel = cmdCari.ExecuteScalar();
+                    if (resMapel != null)
                     {
-                        MessageBox.Show("Anda sudah mengambil jadwal ini sebelumnya!", "Informasi", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        return; // Batalkan proses simpan
+                        idKeahlianBaru = resMapel.ToString();
                     }
 
-                    // 2. Simpan jika belum ada
-                    SqlCommand cmd = new SqlCommand("INSERT INTO Jadwal_Pribadi (idJadwal, idUser) VALUES (@idJadwal, @idUser)", conn);
-                    cmd.Parameters.AddWithValue("@idJadwal", idJadwal);
-                    cmd.Parameters.AddWithValue("@idUser", idUser);
+                    // 2. LAKUKAN UPDATE (Tambahkan idKeahlian ke query)
+                    string query = "UPDATE Jadwal SET jamMulai = @mulai, jamSelesai = @selesai, idKelas = @kelas, idKeahlian = @keahlian WHERE idJadwal = @id";
+                    SqlCommand cmd = new SqlCommand(query, conn);
+                    cmd.Parameters.AddWithValue("@mulai", dtpMulai.Value.ToString("HH:mm:ss"));
+                    cmd.Parameters.AddWithValue("@selesai", dtpSelesai.Value.ToString("HH:mm:ss"));
+                    cmd.Parameters.AddWithValue("@kelas", cmbPilihkelas.Text);
+                    cmd.Parameters.AddWithValue("@keahlian", idKeahlianBaru); // Menyimpan ID Mapel yang baru
+                    cmd.Parameters.AddWithValue("@id", idJadwal);
 
                     cmd.ExecuteNonQuery();
-                    MessageBox.Show("Jadwal Pribadi Berhasil Disimpan!", "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("Data Jadwal Berhasil Diupdate!", "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                    // Refresh perhitungan kapasitas setelah simpan
-                    dgvJadwal_CellClick(null, null);
+                    // Refresh tampilan tabel agar perubahannya langsung muncul
+                    tampilkanData();
                 }
-                catch (Exception ex) { MessageBox.Show("Gagal Simpan (Mungkin jadwal sudah ada): " + ex.Message); }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Gagal Update: " + ex.Message);
+                }
             }
         }
 
@@ -295,5 +341,15 @@ namespace UCPPABD
         private void button3_Click(object sender, EventArgs e) { }
         private void cmbJadwalLama_SelectedIndexChanged(object sender, EventArgs e) { }
         private void txtMapel_TextChanged(object sender, EventArgs e) { }
+
+        private void label5_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dtpMulai_ValueChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

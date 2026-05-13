@@ -21,6 +21,10 @@ namespace UCPPABD
             InitializeComponent();
             tampilkanData();      // Load tabel jadwal saat dibuka
             isiPilihanComboBox(); // Load data Guru, Mapel, dan Kelas ke dropdown
+                                  // Set default jam 07:00 pagi
+            DateTime hariIni = DateTime.Now;
+            dtpMulai.Value = new DateTime(hariIni.Year, hariIni.Month, hariIni.Day, 7, 0, 0);
+            dtpSelesai.Value = new DateTime(hariIni.Year, hariIni.Month, hariIni.Day, 8, 0, 0);
         }
 
         // --- 1. FUNGSI MENAMPILKAN DATA KE TABEL (READ) ---
@@ -31,15 +35,19 @@ namespace UCPPABD
                 try
                 {
                     conn.Open();
-                    SqlDataAdapter da = new SqlDataAdapter("SELECT * FROM Jadwal", conn);
+                    // Query JOIN agar muncul Nama, bukan ID yang membingungkan
+                    string query = @"SELECT j.idJadwal, j.hari, j.jamMulai, j.jamSelesai, j.idKelas, 
+                             m.namaMapel AS MataPelajaran, g.nama AS NamaGuru 
+                             FROM Jadwal j 
+                             JOIN MataPelajaran m ON j.idKeahlian = m.idMapel 
+                             JOIN Guru g ON j.idGuru = g.idGuru";
+
+                    SqlDataAdapter da = new SqlDataAdapter(query, conn);
                     DataTable dt = new DataTable();
                     da.Fill(dt);
                     dgvJadwal.DataSource = dt;
                 }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Gagal memuat tabel: " + ex.Message);
-                }
+                catch (Exception ex) { MessageBox.Show("Gagal memuat tabel: " + ex.Message); }
             }
         }
 
@@ -291,12 +299,16 @@ namespace UCPPABD
         // --- 8. KLIK TABEL ---
         private void dgvJadwal_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (dgvJadwal.CurrentRow != null)
+            if (dgvJadwal.CurrentRow != null && e.RowIndex >= 0)
             {
                 cmbHari.Text = dgvJadwal.CurrentRow.Cells["hari"].Value.ToString();
                 cmbKelas.Text = dgvJadwal.CurrentRow.Cells["idKelas"].Value.ToString();
-                cmbMapel.Text = dgvJadwal.CurrentRow.Cells["idKeahlian"].Value.ToString();
-                cmbGuru.Text = dgvJadwal.CurrentRow.Cells["idGuru"].Value.ToString();
+                cmbMapel.Text = dgvJadwal.CurrentRow.Cells["MataPelajaran"].Value.ToString();
+                cmbGuru.Text = dgvJadwal.CurrentRow.Cells["NamaGuru"].Value.ToString();
+
+                // Sinkronisasi Jam ke DateTimePicker
+                dtpMulai.Value = DateTime.Parse(dgvJadwal.CurrentRow.Cells["jamMulai"].Value.ToString());
+                dtpSelesai.Value = DateTime.Parse(dgvJadwal.CurrentRow.Cells["jamSelesai"].Value.ToString());
             }
         }
 

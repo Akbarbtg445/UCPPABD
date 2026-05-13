@@ -37,26 +37,29 @@
             this.label1 = new System.Windows.Forms.Label();
             this.cmbKelas = new System.Windows.Forms.ComboBox();
             this.dgvJadwal = new System.Windows.Forms.DataGridView();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.cmbJadwalLama = new System.Windows.Forms.ComboBox();
-            this.btnSimpan = new System.Windows.Forms.Button();
-            this.label7 = new System.Windows.Forms.Label();
-            this.cmbPilihkelas = new System.Windows.Forms.ComboBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.txtMapel = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.btnCetak = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.lblStatus = new System.Windows.Forms.Label();
             this.lblSisa = new System.Windows.Forms.Label();
             this.lblTerisi = new System.Windows.Forms.Label();
             this.lblMax = new System.Windows.Forms.Label();
+            this.btnCetak = new System.Windows.Forms.Button();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.cmbPilihkelas = new System.Windows.Forms.ComboBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.btnSimpan = new System.Windows.Forms.Button();
+            this.Jammulai = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.dtpMulai = new System.Windows.Forms.DateTimePicker();
+            this.dtpSelesai = new System.Windows.Forms.DateTimePicker();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.cmbMapel = new System.Windows.Forms.ComboBox();
             this.panel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvJadwal)).BeginInit();
-            this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
+            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnLogout
@@ -79,7 +82,7 @@
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1165, 55);
+            this.panel1.Size = new System.Drawing.Size(1515, 55);
             this.panel1.TabIndex = 1;
             // 
             // lblNIS
@@ -154,120 +157,10 @@
             this.dgvJadwal.RowHeadersWidth = 62;
             this.dgvJadwal.RowTemplate.Height = 28;
             this.dgvJadwal.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvJadwal.Size = new System.Drawing.Size(872, 182);
+            this.dgvJadwal.Size = new System.Drawing.Size(1124, 182);
             this.dgvJadwal.TabIndex = 3;
             this.dgvJadwal.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvJadwal_CellClick);
             this.dgvJadwal.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvJadwal_CellClick);
-            // 
-            // groupBox2
-            // 
-            this.groupBox2.Controls.Add(this.btnSimpan);
-            this.groupBox2.Controls.Add(this.label7);
-            this.groupBox2.Controls.Add(this.cmbPilihkelas);
-            this.groupBox2.Controls.Add(this.label4);
-            this.groupBox2.Controls.Add(this.txtMapel);
-            this.groupBox2.Controls.Add(this.label3);
-            this.groupBox2.Controls.Add(this.label2);
-            this.groupBox2.Controls.Add(this.btnCetak);
-            this.groupBox2.Location = new System.Drawing.Point(556, 465);
-            this.groupBox2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.groupBox2.Size = new System.Drawing.Size(318, 230);
-            this.groupBox2.TabIndex = 4;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Edit Jadwal Pribadi";
-            this.groupBox2.Enter += new System.EventHandler(this.groupBox2_Enter);
-            // 
-            // cmbJadwalLama
-            // 
-            this.cmbJadwalLama.FormattingEnabled = true;
-            this.cmbJadwalLama.Location = new System.Drawing.Point(738, 465);
-            this.cmbJadwalLama.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.cmbJadwalLama.Name = "cmbJadwalLama";
-            this.cmbJadwalLama.Size = new System.Drawing.Size(136, 28);
-            this.cmbJadwalLama.TabIndex = 6;
-            this.cmbJadwalLama.SelectedIndexChanged += new System.EventHandler(this.cmbJadwalLama_SelectedIndexChanged);
-            // 
-            // btnSimpan
-            // 
-            this.btnSimpan.Location = new System.Drawing.Point(14, 194);
-            this.btnSimpan.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.btnSimpan.Name = "btnSimpan";
-            this.btnSimpan.Size = new System.Drawing.Size(75, 36);
-            this.btnSimpan.TabIndex = 7;
-            this.btnSimpan.Text = "Simpan";
-            this.btnSimpan.UseVisualStyleBackColor = true;
-            this.btnSimpan.Click += new System.EventHandler(this.btnSimpan_Click);
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(6, 171);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(145, 20);
-            this.label7.TabIndex = 6;
-            this.label7.Text = "Simpan Perubahan";
-            this.label7.Click += new System.EventHandler(this.label7_Click);
-            // 
-            // cmbPilihkelas
-            // 
-            this.cmbPilihkelas.FormattingEnabled = true;
-            this.cmbPilihkelas.Location = new System.Drawing.Point(182, 115);
-            this.cmbPilihkelas.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.cmbPilihkelas.Name = "cmbPilihkelas";
-            this.cmbPilihkelas.Size = new System.Drawing.Size(129, 28);
-            this.cmbPilihkelas.TabIndex = 5;
-            this.cmbPilihkelas.SelectedIndexChanged += new System.EventHandler(this.cmbPilihkelas_SelectedIndexChanged);
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(10, 118);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(80, 20);
-            this.label4.TabIndex = 4;
-            this.label4.Text = "Pilih Kelas";
-            this.label4.Click += new System.EventHandler(this.label4_Click);
-            // 
-            // txtMapel
-            // 
-            this.txtMapel.Location = new System.Drawing.Point(182, 59);
-            this.txtMapel.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.txtMapel.Name = "txtMapel";
-            this.txtMapel.Size = new System.Drawing.Size(129, 26);
-            this.txtMapel.TabIndex = 3;
-            this.txtMapel.TextChanged += new System.EventHandler(this.txtMapel_TextChanged);
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(10, 62);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(115, 20);
-            this.label3.TabIndex = 2;
-            this.label3.Text = "Mata Pelajaran";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(156, 171);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(156, 20);
-            this.label2.TabIndex = 1;
-            this.label2.Text = "Cetak Jadwal Pribadi";
-            this.label2.Click += new System.EventHandler(this.label2_Click);
-            // 
-            // btnCetak
-            // 
-            this.btnCetak.Location = new System.Drawing.Point(214, 194);
-            this.btnCetak.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.btnCetak.Name = "btnCetak";
-            this.btnCetak.Size = new System.Drawing.Size(75, 30);
-            this.btnCetak.TabIndex = 0;
-            this.btnCetak.Text = "Cetak";
-            this.btnCetak.UseVisualStyleBackColor = true;
-            this.btnCetak.Click += new System.EventHandler(this.btnCetak_Click);
             // 
             // groupBox3
             // 
@@ -275,7 +168,7 @@
             this.groupBox3.Controls.Add(this.lblSisa);
             this.groupBox3.Controls.Add(this.lblTerisi);
             this.groupBox3.Controls.Add(this.lblMax);
-            this.groupBox3.Location = new System.Drawing.Point(60, 465);
+            this.groupBox3.Location = new System.Drawing.Point(49, 450);
             this.groupBox3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
@@ -322,12 +215,152 @@
             this.lblMax.Text = "Kapasitas Maksimal";
             this.lblMax.Click += new System.EventHandler(this.label8_Click);
             // 
+            // btnCetak
+            // 
+            this.btnCetak.Location = new System.Drawing.Point(213, 227);
+            this.btnCetak.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.btnCetak.Name = "btnCetak";
+            this.btnCetak.Size = new System.Drawing.Size(75, 30);
+            this.btnCetak.TabIndex = 0;
+            this.btnCetak.Text = "Cetak";
+            this.btnCetak.UseVisualStyleBackColor = true;
+            this.btnCetak.Click += new System.EventHandler(this.btnCetak_Click);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(157, 192);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(156, 20);
+            this.label2.TabIndex = 1;
+            this.label2.Text = "Cetak Jadwal Pribadi";
+            this.label2.Click += new System.EventHandler(this.label2_Click);
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(14, 112);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(115, 20);
+            this.label3.TabIndex = 2;
+            this.label3.Text = "Mata Pelajaran";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(19, 149);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(80, 20);
+            this.label4.TabIndex = 4;
+            this.label4.Text = "Pilih Kelas";
+            this.label4.Click += new System.EventHandler(this.label4_Click);
+            // 
+            // cmbPilihkelas
+            // 
+            this.cmbPilihkelas.FormattingEnabled = true;
+            this.cmbPilihkelas.Location = new System.Drawing.Point(135, 141);
+            this.cmbPilihkelas.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.cmbPilihkelas.Name = "cmbPilihkelas";
+            this.cmbPilihkelas.Size = new System.Drawing.Size(129, 28);
+            this.cmbPilihkelas.TabIndex = 5;
+            this.cmbPilihkelas.SelectedIndexChanged += new System.EventHandler(this.cmbPilihkelas_SelectedIndexChanged);
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(6, 192);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(145, 20);
+            this.label7.TabIndex = 6;
+            this.label7.Text = "Simpan Perubahan";
+            this.label7.Click += new System.EventHandler(this.label7_Click);
+            // 
+            // btnSimpan
+            // 
+            this.btnSimpan.Location = new System.Drawing.Point(10, 227);
+            this.btnSimpan.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.btnSimpan.Name = "btnSimpan";
+            this.btnSimpan.Size = new System.Drawing.Size(75, 36);
+            this.btnSimpan.TabIndex = 7;
+            this.btnSimpan.Text = "Update";
+            this.btnSimpan.UseVisualStyleBackColor = true;
+            this.btnSimpan.Click += new System.EventHandler(this.btnSimpan_Click);
+            // 
+            // Jammulai
+            // 
+            this.Jammulai.AutoSize = true;
+            this.Jammulai.Location = new System.Drawing.Point(6, 46);
+            this.Jammulai.Name = "Jammulai";
+            this.Jammulai.Size = new System.Drawing.Size(80, 20);
+            this.Jammulai.TabIndex = 9;
+            this.Jammulai.Text = "Jam Mulai";
+            this.Jammulai.Click += new System.EventHandler(this.label5_Click);
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(228, 46);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(95, 20);
+            this.label5.TabIndex = 10;
+            this.label5.Text = "Jam Selesai";
+            // 
+            // dtpMulai
+            // 
+            this.dtpMulai.Format = System.Windows.Forms.DateTimePickerFormat.Time;
+            this.dtpMulai.Location = new System.Drawing.Point(10, 76);
+            this.dtpMulai.Name = "dtpMulai";
+            this.dtpMulai.ShowUpDown = true;
+            this.dtpMulai.Size = new System.Drawing.Size(141, 26);
+            this.dtpMulai.TabIndex = 11;
+            this.dtpMulai.ValueChanged += new System.EventHandler(this.dtpMulai_ValueChanged);
+            // 
+            // dtpSelesai
+            // 
+            this.dtpSelesai.Format = System.Windows.Forms.DateTimePickerFormat.Time;
+            this.dtpSelesai.Location = new System.Drawing.Point(232, 76);
+            this.dtpSelesai.Name = "dtpSelesai";
+            this.dtpSelesai.ShowUpDown = true;
+            this.dtpSelesai.Size = new System.Drawing.Size(134, 26);
+            this.dtpSelesai.TabIndex = 12;
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.cmbMapel);
+            this.groupBox2.Controls.Add(this.dtpSelesai);
+            this.groupBox2.Controls.Add(this.dtpMulai);
+            this.groupBox2.Controls.Add(this.label5);
+            this.groupBox2.Controls.Add(this.Jammulai);
+            this.groupBox2.Controls.Add(this.btnSimpan);
+            this.groupBox2.Controls.Add(this.label7);
+            this.groupBox2.Controls.Add(this.cmbPilihkelas);
+            this.groupBox2.Controls.Add(this.label4);
+            this.groupBox2.Controls.Add(this.label3);
+            this.groupBox2.Controls.Add(this.label2);
+            this.groupBox2.Controls.Add(this.btnCetak);
+            this.groupBox2.Location = new System.Drawing.Point(547, 450);
+            this.groupBox2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.groupBox2.Size = new System.Drawing.Size(539, 267);
+            this.groupBox2.TabIndex = 4;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Edit Jadwal Kelas";
+            this.groupBox2.Enter += new System.EventHandler(this.groupBox2_Enter);
+            // 
+            // cmbMapel
+            // 
+            this.cmbMapel.FormattingEnabled = true;
+            this.cmbMapel.Location = new System.Drawing.Point(136, 109);
+            this.cmbMapel.Name = "cmbMapel";
+            this.cmbMapel.Size = new System.Drawing.Size(187, 28);
+            this.cmbMapel.TabIndex = 13;
+            // 
             // UserDashboard
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1165, 728);
-            this.Controls.Add(this.cmbJadwalLama);
+            this.ClientSize = new System.Drawing.Size(1515, 766);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.dgvJadwal);
@@ -342,10 +375,10 @@
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvJadwal)).EndInit();
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -358,23 +391,26 @@
         private System.Windows.Forms.DataGridView dgvJadwal;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox cmbKelas;
-        private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Button btnCari;
         private System.Windows.Forms.GroupBox groupBox3;
-        private System.Windows.Forms.Button btnCetak;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox txtMapel;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.ComboBox cmbPilihkelas;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Button btnSimpan;
         private System.Windows.Forms.Label lblMax;
         private System.Windows.Forms.Label lblSisa;
         private System.Windows.Forms.Label lblTerisi;
         private System.Windows.Forms.Label lblStatus;
         public System.Windows.Forms.Label lblNIS;
         public System.Windows.Forms.Label lblNama;
-        private System.Windows.Forms.ComboBox cmbJadwalLama;
+        private System.Windows.Forms.Button btnCetak;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.ComboBox cmbPilihkelas;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Button btnSimpan;
+        private System.Windows.Forms.Label Jammulai;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.DateTimePicker dtpMulai;
+        private System.Windows.Forms.DateTimePicker dtpSelesai;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.ComboBox cmbMapel;
     }
 }

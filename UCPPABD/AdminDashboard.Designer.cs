@@ -63,7 +63,7 @@
             this.dgvJadwal.Name = "dgvJadwal";
             this.dgvJadwal.RowHeadersWidth = 62;
             this.dgvJadwal.RowTemplate.Height = 28;
-            this.dgvJadwal.Size = new System.Drawing.Size(611, 150);
+            this.dgvJadwal.Size = new System.Drawing.Size(905, 150);
             this.dgvJadwal.TabIndex = 0;
             this.dgvJadwal.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvJadwal_CellContentClick);
             // 
@@ -156,7 +156,7 @@
             // 
             this.btnCetak.Location = new System.Drawing.Point(462, 244);
             this.btnCetak.Name = "btnCetak";
-            this.btnCetak.Size = new System.Drawing.Size(121, 28);
+            this.btnCetak.Size = new System.Drawing.Size(121, 39);
             this.btnCetak.TabIndex = 13;
             this.btnCetak.Text = "Cetak";
             this.btnCetak.UseVisualStyleBackColor = true;
@@ -166,7 +166,7 @@
             // 
             this.btnHapus.Location = new System.Drawing.Point(320, 244);
             this.btnHapus.Name = "btnHapus";
-            this.btnHapus.Size = new System.Drawing.Size(121, 28);
+            this.btnHapus.Size = new System.Drawing.Size(121, 39);
             this.btnHapus.TabIndex = 12;
             this.btnHapus.Text = "Hapus";
             this.btnHapus.UseVisualStyleBackColor = true;
@@ -176,7 +176,7 @@
             // 
             this.btnUbah.Location = new System.Drawing.Point(188, 244);
             this.btnUbah.Name = "btnUbah";
-            this.btnUbah.Size = new System.Drawing.Size(121, 28);
+            this.btnUbah.Size = new System.Drawing.Size(121, 39);
             this.btnUbah.TabIndex = 11;
             this.btnUbah.Text = "Ubah";
             this.btnUbah.UseVisualStyleBackColor = true;
@@ -186,7 +186,7 @@
             // 
             this.btnTambah.Location = new System.Drawing.Point(47, 244);
             this.btnTambah.Name = "btnTambah";
-            this.btnTambah.Size = new System.Drawing.Size(121, 28);
+            this.btnTambah.Size = new System.Drawing.Size(121, 39);
             this.btnTambah.TabIndex = 10;
             this.btnTambah.Text = "Tambah";
             this.btnTambah.UseVisualStyleBackColor = true;
@@ -317,7 +317,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(941, 612);
+            this.ClientSize = new System.Drawing.Size(1107, 630);
             this.Controls.Add(this.btnLogoutA);
             this.Controls.Add(this.tabeljadwalsaatini);
             this.Controls.Add(this.panelinput);
