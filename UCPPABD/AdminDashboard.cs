@@ -229,6 +229,9 @@ namespace UCPPABD
                         conn.Open();
                         cmd.ExecuteNonQuery();
 
+                        MessageBox.Show("Data Berhasil Terhapus!");
+                        tampilkanData();
+                        resetForm();
 
 
 
