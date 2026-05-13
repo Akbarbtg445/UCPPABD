@@ -53,6 +53,7 @@
             this.lblSisa = new System.Windows.Forms.Label();
             this.lblTerisi = new System.Windows.Forms.Label();
             this.lblMax = new System.Windows.Forms.Label();
+            this.cmbJadwalLama = new System.Windows.Forms.ComboBox();
             this.panel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvJadwal)).BeginInit();
@@ -153,6 +154,7 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.cmbJadwalLama);
             this.groupBox2.Controls.Add(this.btnSimpan);
             this.groupBox2.Controls.Add(this.label7);
             this.groupBox2.Controls.Add(this.cmbPilihkelas);
@@ -191,7 +193,7 @@
             // cmbPilihkelas
             // 
             this.cmbPilihkelas.FormattingEnabled = true;
-            this.cmbPilihkelas.Location = new System.Drawing.Point(160, 82);
+            this.cmbPilihkelas.Location = new System.Drawing.Point(152, 123);
             this.cmbPilihkelas.Name = "cmbPilihkelas";
             this.cmbPilihkelas.Size = new System.Drawing.Size(129, 28);
             this.cmbPilihkelas.TabIndex = 5;
@@ -200,7 +202,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(32, 82);
+            this.label4.Location = new System.Drawing.Point(20, 126);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(80, 20);
             this.label4.TabIndex = 4;
@@ -209,7 +211,7 @@
             // 
             // txtMapel
             // 
-            this.txtMapel.Location = new System.Drawing.Point(160, 40);
+            this.txtMapel.Location = new System.Drawing.Point(152, 87);
             this.txtMapel.Name = "txtMapel";
             this.txtMapel.Size = new System.Drawing.Size(129, 26);
             this.txtMapel.TabIndex = 3;
@@ -217,7 +219,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(6, 43);
+            this.label3.Location = new System.Drawing.Point(10, 87);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(115, 20);
             this.label3.TabIndex = 2;
@@ -316,6 +318,14 @@
             this.lblMax.Text = "Kapasitas Maksimal";
             this.lblMax.Click += new System.EventHandler(this.label8_Click);
             // 
+            // cmbJadwalLama
+            // 
+            this.cmbJadwalLama.FormattingEnabled = true;
+            this.cmbJadwalLama.Location = new System.Drawing.Point(160, 43);
+            this.cmbJadwalLama.Name = "cmbJadwalLama";
+            this.cmbJadwalLama.Size = new System.Drawing.Size(121, 28);
+            this.cmbJadwalLama.TabIndex = 6;
+            // 
             // UserDashboard
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -369,5 +379,6 @@
         private System.Windows.Forms.Label lblStatus;
         public System.Windows.Forms.Label lblNIS;
         public System.Windows.Forms.Label lblNama;
+        private System.Windows.Forms.ComboBox cmbJadwalLama;
     }
 }
