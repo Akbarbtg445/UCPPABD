@@ -41,22 +41,14 @@ namespace UCPPABD
                 {
                     conn.Open();
 
-                    // 3. QUERY DINAMIS (Solusi agar Admin tidak Error 'nama')
+                    // 3. QUERY DINAMIS 
                     string query;
                     if (role == "Admin")
                     {
-                        // Admin cukup ambil username saja
-                        query = $"SELECT username FROM {tabel} WHERE username=@user AND password=@pass";
-                    }
-                    else
-                    {
-                        // User ambil nama dan NIS untuk identitas
-                        query = $"SELECT nama, NIS FROM {tabel} WHERE username=@user AND password=@pass";
+                        // Bahaya: Input langsung dimasukkan ke dalam teks kueri menggunakan tanda kutip satu (' ')
+                        query = "SELECT username FROM " + tabel + " WHERE username='" + user + "' AND password='" + pass + "'";
                     }
 
-                    SqlCommand cmd = new SqlCommand(query, conn);
-                    cmd.Parameters.AddWithValue("@user", user);
-                    cmd.Parameters.AddWithValue("@pass", pass);
 
                     SqlDataReader reader = cmd.ExecuteReader();
 
