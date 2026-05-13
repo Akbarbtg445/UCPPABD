@@ -96,7 +96,7 @@ namespace UCPPABD
                 try
                 {
                     conn.Open();
-                    // Menggunakan VIEW (Poin 2)
+                    // mengubah menjadi Menggunakan VIEW 
                     SqlDataAdapter da = new SqlDataAdapter("SELECT * FROM vw_JadwalPelajaran", conn);
                     DataTable dt = new DataTable();
                     da.Fill(dt);
