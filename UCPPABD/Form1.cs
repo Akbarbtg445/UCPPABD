@@ -55,8 +55,8 @@ namespace UCPPABD
                     }
 
                     SqlCommand cmd = new SqlCommand(query, conn);
+                    // kode dibwh ini untuk penonaktifan parameterized query untuk simulasi celah keamanan
 
-                    // HAPUS ATAU JADIKAN KOMENTAR BARIS PARAMETER DI BAWAH INI
                     // cmd.Parameters.AddWithValue("@user", user);
                     // cmd.Parameters.AddWithValue("@pass", pass);
 
