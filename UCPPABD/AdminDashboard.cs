@@ -233,7 +233,14 @@ namespace UCPPABD
                         tampilkanData();
                         resetForm();
 
-
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Error Hapus: " + ex.Message);
+                    }
+                }
+            }
+        }
 
 
         // --- 7. TOMBOL CETAK (EKSPOR KE CSV/EXCEL) ---
