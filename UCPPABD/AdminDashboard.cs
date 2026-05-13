@@ -218,22 +218,10 @@ namespace UCPPABD
                 {
                     try
                     {
-                        conn.Open();
-                        SqlCommand cmd = new SqlCommand("DELETE FROM Jadwal WHERE idJadwal = @id", conn);
-                        cmd.Parameters.AddWithValue("@id", id);
-                        cmd.ExecuteNonQuery();
+                        // 1. Ganti kueri biasa dengan nama Stored Procedure
+                        SqlCommand cmd = new SqlCommand("sp_DeleteJadwal", conn);
 
-                        MessageBox.Show("Data Berhasil Terhapus!");
-                        tampilkanData();
-                        resetForm();
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show("Error Hapus: " + ex.Message);
-                    }
-                }
-            }
-        }
+
 
         // --- 7. TOMBOL CETAK (EKSPOR KE CSV/EXCEL) ---
         private void button4_Click(object sender, EventArgs e)
