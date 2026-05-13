@@ -19,6 +19,12 @@ namespace UCPPABD
         private BindingSource bindingSource = new BindingSource();
         private DataTable dtJadwal = new DataTable();
 
+        public AdminDashboard()
+        {
+            InitializeComponent();
+            tampilkanData();
+            isiPilihanComboBox();
+        }
 
         // --- 1. FUNGSI MENAMPILKAN DATA KE TABEL (READ) ---
         void tampilkanData()
