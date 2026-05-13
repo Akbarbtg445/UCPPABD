@@ -136,6 +136,13 @@ namespace UCPPABD
                     SqlCommand cmd = new SqlCommand("sp_InsertJadwal", conn);
                     cmd.CommandType = CommandType.StoredProcedure; // Wajib ditambahkan
 
+                    cmd.Parameters.AddWithValue("@hari", cmbHari.Text);
+                    cmd.Parameters.AddWithValue("@mulai", dtpMulai.Value.ToString("HH:mm:ss"));
+                    cmd.Parameters.AddWithValue("@selesai", dtpSelesai.Value.ToString("HH:mm:ss"));
+                    cmd.Parameters.AddWithValue("@kelas", cmbKelas.Text);
+                    cmd.Parameters.AddWithValue("@namaMapel", cmbMapel.Text);
+                    cmd.Parameters.AddWithValue("@namaGuru", cmbGuru.Text);
+
 
 
         // --- 5. TOMBOL UBAH (UPDATE) ---
