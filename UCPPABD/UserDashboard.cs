@@ -106,20 +106,39 @@ namespace UCPPABD
                 {
                     string idJadwal = dgvJadwal.CurrentRow.Cells["idJadwal"].Value.ToString();
                     string idKelas = dgvJadwal.CurrentRow.Cells["idKelas"].Value.ToString();
+                    string idKeahlianTerpilih = dgvJadwal.CurrentRow.Cells["idKeahlian"].Value.ToString();
 
-                    txtMapel.Text = dgvJadwal.CurrentRow.Cells["idKeahlian"].Value.ToString();
                     cmbPilihkelas.Text = idKelas;
 
                     using (SqlConnection conn = new SqlConnection(connectionString))
                     {
                         conn.Open();
-                        // Ambil Kapasitas Maksimal
+
+                        // 1. Ambil Nama Mata Pelajaran (Bukan ID-nya) dengan JOIN
+                        string queryMapel = @"SELECT m.namaMapel 
+                                              FROM MataPelajaran m 
+                                              JOIN Keahlian_Guru kg ON m.idMapel = kg.idMapel 
+                                              WHERE kg.idKeahlian = @id";
+                        SqlCommand cmdMapel = new SqlCommand(queryMapel, conn);
+                        cmdMapel.Parameters.AddWithValue("@id", idKeahlianTerpilih);
+                        object namaMapel = cmdMapel.ExecuteScalar();
+
+                        if (namaMapel != null)
+                        {
+                            txtMapel.Text = namaMapel.ToString();
+                        }
+                        else
+                        {
+                            txtMapel.Text = "-";
+                        }
+
+                        // 2. Ambil Kapasitas Maksimal
                         SqlCommand cmdMax = new SqlCommand("SELECT kapasitas FROM Kelas WHERE idKelas = @kelas", conn);
                         cmdMax.Parameters.AddWithValue("@kelas", idKelas);
                         object res = cmdMax.ExecuteScalar();
                         int max = (res != null) ? Convert.ToInt32(res) : 0;
 
-                        // Hitung Jumlah Siswa Terisi
+                        // 3. Hitung Jumlah Siswa Terisi
                         SqlCommand cmdTerisi = new SqlCommand("SELECT COUNT(*) FROM Jadwal_Pribadi WHERE idJadwal = @id", conn);
                         cmdTerisi.Parameters.AddWithValue("@id", idJadwal);
                         int terisi = Convert.ToInt32(cmdTerisi.ExecuteScalar());
@@ -143,9 +162,12 @@ namespace UCPPABD
                             lblStatus.ForeColor = Color.Red;
                             btnSimpan.Enabled = false;
                         }
-                    }
+                    } // conn otomatis ditutup di sini berkat 'using'
                 }
-                catch (Exception ex) { MessageBox.Show("Gagal pilih data: " + ex.Message); }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Gagal pilih data: " + ex.Message);
+                }
             }
         }
 
@@ -158,20 +180,44 @@ namespace UCPPABD
                 return;
             }
 
+            // Pastikan Label NIS/User ID (di pojok kanan atas) terbaca dengan benar
+            string idUser = lblNIS.Text;
+
+            if (string.IsNullOrEmpty(idUser))
+            {
+                MessageBox.Show("Error: ID User tidak ditemukan. Silakan login ulang.", "Peringatan");
+                return;
+            }
+
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 try
                 {
                     conn.Open();
                     string idJadwal = dgvJadwal.CurrentRow.Cells["idJadwal"].Value.ToString();
-                    string nisSiswa = lblNIS.Text;
 
-                    SqlCommand cmd = new SqlCommand("INSERT INTO Jadwal_Pribadi (idJadwal, NIS) VALUES (@id, @nis)", conn);
-                    cmd.Parameters.AddWithValue("@id", idJadwal);
-                    cmd.Parameters.AddWithValue("@nis", nisSiswa);
+                    // 1. Cek apakah jadwal sudah pernah diambil oleh user ini
+                    SqlCommand cmdCek = new SqlCommand("SELECT COUNT(*) FROM Jadwal_Pribadi WHERE idJadwal = @idJadwal AND idUser = @idUser", conn);
+                    cmdCek.Parameters.AddWithValue("@idJadwal", idJadwal);
+                    cmdCek.Parameters.AddWithValue("@idUser", idUser);
+                    int sudahAda = Convert.ToInt32(cmdCek.ExecuteScalar());
+
+                    if (sudahAda > 0)
+                    {
+                        MessageBox.Show("Anda sudah mengambil jadwal ini sebelumnya!", "Informasi", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        return; // Batalkan proses simpan
+                    }
+
+                    // 2. Simpan jika belum ada
+                    SqlCommand cmd = new SqlCommand("INSERT INTO Jadwal_Pribadi (idJadwal, idUser) VALUES (@idJadwal, @idUser)", conn);
+                    cmd.Parameters.AddWithValue("@idJadwal", idJadwal);
+                    cmd.Parameters.AddWithValue("@idUser", idUser);
 
                     cmd.ExecuteNonQuery();
                     MessageBox.Show("Jadwal Pribadi Berhasil Disimpan!", "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    // Refresh perhitungan kapasitas setelah simpan
+                    dgvJadwal_CellClick(null, null);
                 }
                 catch (Exception ex) { MessageBox.Show("Gagal Simpan (Mungkin jadwal sudah ada): " + ex.Message); }
             }
@@ -190,7 +236,7 @@ namespace UCPPABD
                                      JOIN Jadwal j ON jp.idJadwal = j.idJadwal 
                                      JOIN MataPelajaran m ON j.idKeahlian = m.idMapel 
                                      JOIN Guru g ON j.idGuru = g.idGuru 
-                                     WHERE jp.NIS = @nis";
+                                     WHERE jp.idUser = @nis";
 
                     SqlCommand cmd = new SqlCommand(query, conn);
                     cmd.Parameters.AddWithValue("@nis", lblNIS.Text);
@@ -235,7 +281,7 @@ namespace UCPPABD
             this.Hide();
         }
 
-        // Event handler kosong agar tidak error
+        // Event handler kosong agar tidak error di Designer
         private void label1_Click(object sender, EventArgs e) { }
         private void label2_Click(object sender, EventArgs e) { }
         private void label4_Click(object sender, EventArgs e) { }
@@ -247,5 +293,7 @@ namespace UCPPABD
         private void groupBox2_Enter(object sender, EventArgs e) { }
         private void cmbPilihkelas_SelectedIndexChanged(object sender, EventArgs e) { }
         private void button3_Click(object sender, EventArgs e) { }
+        private void cmbJadwalLama_SelectedIndexChanged(object sender, EventArgs e) { }
+        private void txtMapel_TextChanged(object sender, EventArgs e) { }
     }
 }
