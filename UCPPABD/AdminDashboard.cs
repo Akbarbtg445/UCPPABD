@@ -134,7 +134,7 @@ namespace UCPPABD
                 {
                     // Memanggil STORED PROCEDURE
                     SqlCommand cmd = new SqlCommand("sp_InsertJadwal", conn);
-                    cmd.CommandType = CommandType.StoredProcedure; // Wajib ditambahkan
+                    cmd.CommandType = CommandType.StoredProcedure; 
 
                     cmd.Parameters.AddWithValue("@hari", cmbHari.Text);
                     cmd.Parameters.AddWithValue("@mulai", dtpMulai.Value.ToString("HH:mm:ss"));
@@ -184,33 +184,10 @@ namespace UCPPABD
             {
                 try
                 {
-                    conn.Open();
-                    string id = dgvJadwal.CurrentRow.Cells["idJadwal"].Value.ToString();
+                    // Memanggil STORED PROCEDURE
+                    SqlCommand cmd = new SqlCommand("sp_UpdateJadwal", conn);
+                    cmd.CommandType = CommandType.StoredProcedure;
 
-                    string query = "UPDATE Jadwal SET hari=@hari, jamMulai=@mulai, jamSelesai=@selesai, idKelas=@kelas, " +
-                                   "idKeahlian=(SELECT TOP 1 idMapel FROM MataPelajaran WHERE namaMapel=@mapel), " +
-                                   "idGuru=(SELECT TOP 1 idGuru FROM Guru WHERE nama=@guru) " +
-                                   "WHERE idJadwal=@id";
-
-                    SqlCommand cmd = new SqlCommand(query, conn);
-                    cmd.Parameters.AddWithValue("@id", id);
-                    cmd.Parameters.AddWithValue("@hari", cmbHari.Text);
-                    cmd.Parameters.AddWithValue("@mulai", dtpMulai.Value.ToString("HH:mm:ss"));
-                    cmd.Parameters.AddWithValue("@selesai", dtpSelesai.Value.ToString("HH:mm:ss"));
-                    cmd.Parameters.AddWithValue("@kelas", cmbKelas.Text);
-                    cmd.Parameters.AddWithValue("@mapel", cmbMapel.Text);
-                    cmd.Parameters.AddWithValue("@guru", cmbGuru.Text);
-
-                    cmd.ExecuteNonQuery();
-                    MessageBox.Show("Data Berhasil Diperbarui!", "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    tampilkanData();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Error Update: " + ex.Message);
-                }
-            }
-        }
 
         // --- 6. TOMBOL HAPUS (DELETE) ---
         private void button3_Click(object sender, EventArgs e)
