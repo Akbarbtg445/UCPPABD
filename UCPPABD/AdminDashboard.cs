@@ -188,6 +188,12 @@ namespace UCPPABD
                     SqlCommand cmd = new SqlCommand("sp_UpdateJadwal", conn);
                     cmd.CommandType = CommandType.StoredProcedure;
 
+                    cmd.Parameters.AddWithValue("@hari", cmbHari.Text);
+                    cmd.Parameters.AddWithValue("@mulai", dtpMulai.Value.ToString("HH:mm:ss"));
+                    cmd.Parameters.AddWithValue("@selesai", dtpSelesai.Value.ToString("HH:mm:ss"));
+                    cmd.Parameters.AddWithValue("@kelas", cmbKelas.Text);
+                    cmd.Parameters.AddWithValue("@namaMapel", cmbMapel.Text);
+                    cmd.Parameters.AddWithValue("@namaGuru", cmbGuru.Text);
 
         // --- 6. TOMBOL HAPUS (DELETE) ---
         private void button3_Click(object sender, EventArgs e)
