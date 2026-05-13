@@ -100,9 +100,11 @@ namespace UCPPABD
         }
 
         // --- 4. KLIK TABEL (SYNC KE FORM EDIT) ---
+        // --- 4. KLIK TABEL (SYNC KE FORM EDIT & CEK KAPASITAS) ---
         private void dgvJadwal_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (dgvJadwal.CurrentRow != null)
+            // Validasi agar tidak error saat mengklik area kosong di tabel
+            if (dgvJadwal.CurrentRow != null && e.RowIndex >= 0)
             {
                 try
                 {
@@ -111,39 +113,40 @@ namespace UCPPABD
 
                     // Tampilkan di box Edit Jadwal Pribadi
                     txtMapel.Text = dgvJadwal.CurrentRow.Cells["idKeahlian"].Value.ToString();
-                    cmbPilihkelas.Text = idKelas; // Pastikan nama objeknya cmbPilihkelas
+                    cmbPilihkelas.Text = idKelas;
 
                     using (SqlConnection conn = new SqlConnection(connectionString))
                     {
                         conn.Open();
-                        // Ambil Kapasitas
+                        // Ambil Kapasitas Maksimal
                         SqlCommand cmdMax = new SqlCommand("SELECT kapasitas FROM Kelas WHERE idKelas = @kelas", conn);
                         cmdMax.Parameters.AddWithValue("@kelas", idKelas);
                         object res = cmdMax.ExecuteScalar();
                         int max = (res != null) ? Convert.ToInt32(res) : 0;
 
-                        // Hitung Terisi
+                        // Hitung Jumlah Siswa Terisi
                         SqlCommand cmdTerisi = new SqlCommand("SELECT COUNT(*) FROM Jadwal_Pribadi WHERE idJadwal = @id", conn);
                         cmdTerisi.Parameters.AddWithValue("@id", idJadwal);
                         int terisi = Convert.ToInt32(cmdTerisi.ExecuteScalar());
 
                         int sisa = max - terisi;
 
-                        lblMax.Text = max.ToString();
-                        lblTerisi.Text = terisi.ToString();
-                        lblSisa.Text = sisa.ToString();
+                        // --- PERBAIKAN TAMPILAN LABEL ---
+                        lblMax.Text = "Kapasitas Maksimal : " + max.ToString();
+                        lblTerisi.Text = "Jumlah Siswa Terisi : " + terisi.ToString();
+                        lblSisa.Text = "Sisa Kuota : " + sisa.ToString();
 
                         if (sisa > 0)
                         {
-                            lblStatus.Text = "TERSEDIA";
+                            lblStatus.Text = "Status : TERSEDIA";
                             lblStatus.ForeColor = Color.Green;
-                            btnSimpan.Enabled = true;
+                            btnSimpan.Enabled = true; // Buka kunci tombol simpan
                         }
                         else
                         {
-                            lblStatus.Text = "PENUH";
+                            lblStatus.Text = "Status : PENUH";
                             lblStatus.ForeColor = Color.Red;
-                            btnSimpan.Enabled = false;
+                            btnSimpan.Enabled = false; // Kunci tombol simpan jika penuh
                         }
                     }
                 }
