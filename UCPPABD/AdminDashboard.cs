@@ -221,6 +221,8 @@ namespace UCPPABD
                         // 1. Ganti kueri biasa dengan nama Stored Procedure
                         SqlCommand cmd = new SqlCommand("sp_DeleteJadwal", conn);
 
+                        // 2. Beritahu program bahwa ini adalah Stored Procedure
+                        cmd.CommandType = CommandType.StoredProcedure;
 
 
         // --- 7. TOMBOL CETAK (EKSPOR KE CSV/EXCEL) ---
