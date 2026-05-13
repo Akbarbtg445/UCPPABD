@@ -30,7 +30,29 @@ namespace UCPPABD
         void tampilkanData()
         {
             using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    conn.Open();
 
+                    using (SqlCommand cmd = new SqlCommand("SELECT * FROM vw_JadwalPelajaran", conn))
+                    {
+                        using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                        {
+                            dtJadwal.Clear(); // Bersihkan data lama
+                            da.Fill(dtJadwal);
+
+                            bindingSource.DataSource = dtJadwal;
+                            dgvJadwal.DataSource = bindingSource;
+
+                            // Hubungkan navigator dengan binding source
+                            bindingNavigator1.BindingSource = bindingSource;
+                        }
+                    }
+                }
+                catch (Exception ex) { MessageBox.Show("Gagal memuat tabel: " + ex.Message); }
+            }
+        }
 
         // --- 2. FUNGSI ISI PILIHAN DROPDOWN 
         void isiPilihanComboBox()
